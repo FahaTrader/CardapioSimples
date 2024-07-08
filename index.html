@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <title>Cardápio Online</title>
+</head>
+
+<body>
+  <div class="cart" id="cart"><i class="fa-solid fa-cart-shopping"></i></div>
+  <div class="container">
+    <h1>Cardápio Online</h1>
+    <div class="underline"></div>
+    <h1 class="title" id="titleRender">-Hambúrguer-</h1>
+    <div class="menu" id="menu"></div>
+    <div id="message" class="hidden">Item adicionado com sucesso!</div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <button id="closeSidebar">&times;</button>
+    <h2>Carrinho</h2>
+    <div id="cartItems"></div>
+    <p class="total">Total: R$ <span id="totalValue">0.00</span></p>
+    <button id="checkout">Finalizar Pedido</button>
+  </div>
+
+  <!-- Formulário de Finalização -->
+  <div id="checkoutForm" class="hidden">
+    <div class="title-form">
+      <button id="closeCheckout"><i class="fa-solid fa-xmark"></i></button>
+      <h2>Finalizar Pedido</h2>
+    </div>
+    <form id="formCheckout">
+      <label for="name">Nome:</label>
+      <input type="text" id="name" name="name" required="" placeholder="Seu Nome">
+      <label for="address">Endereço:</label>
+      <input type="text" id="address" name="address" required="" placeholder="Seu Endereço">
+      <label for="whatsapp">WhatsApp:</label>
+      <input type="tel" id="whatsapp" name="whatsapp" required="" placeholder="Seu Whatsapp">
+      <label for="payment">Forma de Pagamento:</label>
+      <select id="payment" name="payment">
+        <option value="">--Selecione--</option>
+        <option value="credit">Cartão de Crédito</option>
+        <option value="debit">Cartão de Débito</option>
+        <option value="cash">Dinheiro</option>
+      </select>
+      <button class="finalize" type="submit">Enviar Pedido</button>
+    </form>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="renderCategory('hamburguer')"><i class="fa-solid fa-burger"></i></button>
+    <button class="nav-btn" onclick="renderCategory('pizza')"><i class="fa-solid fa-pizza-slice"></i></button>
+    <button class="nav-btn" onclick="renderCategory('churrasco')"><i class="fa-solid fa-bacon"></i></button>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+
+</html>
