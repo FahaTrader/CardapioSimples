@@ -291,8 +291,8 @@ function renderCategory(category) {
         <h3>${item.nome}</h3>
         <p>${item.descricao}</p>
         <p class="price">R$ ${item.valor.toFixed(2)}</p>
-        <button id="addToCartButton${index}" data-id="${item.id}">Adicionar ao Carrinho</button>
       </div>
+      <button id="addToCartButton${index}" data-id="${item.id}">Adicionar ao Carrinho</button>
     `;
 
     menuContainer.appendChild(card);
@@ -335,6 +335,13 @@ function addToCart(id) {
   }, 2000);
 
   updateCart();
+  updateCartCount();
+}
+
+function updateCartCount() {
+  const cartCount = document.getElementById("cartCount");
+  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+  cartCount.textContent = totalItems;
 }
 
 function updateCart() {
@@ -383,6 +390,7 @@ function changeQuantity(id, delta) {
       cart = cart.filter((cartItem) => cartItem.id !== id);
     }
     updateCart();
+    updateCartCount();
   }
 }
 
