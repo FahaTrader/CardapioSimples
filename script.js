@@ -413,9 +413,6 @@ document.getElementById("closeCheckout").addEventListener("click", () => {
   document.getElementById("checkoutForm").classList.add("hidden");
 });
 
-// Initial render
-renderCategory("hamburguer");
-
 document.getElementById('formCheckout').addEventListener('submit', function(event) {
   event.preventDefault(); // Evita o envio padrão do formulário
 
@@ -521,3 +518,6 @@ function sendOrderViaWhatsApp() {
 
 // Adiciona o evento de envio para o WhatsApp no botão de envio do pedido
 document.getElementById("sendOrderButton").addEventListener("click", sendOrderViaWhatsApp);
+
+// Initial render
+renderCategory("hamburguer");
