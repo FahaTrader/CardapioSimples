@@ -259,6 +259,8 @@ const menuItems = {
   ],
 };
 
+document.getElementById("sendOrderButton").addEventListener("click", sendOrderViaWhatsApp);
+
 function renderCategory(category) {
   const titleRender = document.getElementById("titleRender");
   const menuContainer = document.getElementById("menu");
@@ -413,3 +415,109 @@ document.getElementById("closeCheckout").addEventListener("click", () => {
 
 // Initial render
 renderCategory("hamburguer");
+
+document.getElementById('formCheckout').addEventListener('submit', function(event) {
+  event.preventDefault(); // Evita o envio padrão do formulário
+
+  // Captura os dados do formulário de checkout
+  const checkoutData = {
+      nome: document.getElementById('name').value,
+      endereco: document.getElementById('address').value,
+      whatsapp: document.getElementById('whatsapp').value,
+      pagamento: document.getElementById('payment').value,
+      valorTroco: document.getElementById('cashAmount').value || null, // Inclui valor de troco se disponível
+  };
+
+  // Junta os dados do carrinho com os dados do checkout
+  const orderData = {
+      checkoutData: checkoutData,
+      carrinho: cart, // Array com os itens do carrinho
+  };
+
+  // Envia os dados para o backend ou exibe no console
+  console.log(orderData);
+
+  // Exemplo de envio usando fetch
+  fetch('URL_DO_SEU_BACKEND', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderData)
+  })
+  .then(response => response.json())
+  .then(data => {
+      console.log('Pedido enviado com sucesso:', data);
+      alert('Pedido enviado com sucesso!');
+      // Limpa o formulário e carrinho após o pedido ser enviado
+      document.getElementById('formCheckout').reset();
+      cart = [];
+      updateCart();
+      updateCartCount();
+  })
+  .catch(error => {
+      console.error('Erro ao enviar o pedido:', error);
+      alert('Erro ao enviar o pedido. Por favor, tente novamente.');
+  });
+});
+
+// Event listener para exibir ou ocultar o campo "Valor em Dinheiro" conforme a forma de pagamento
+document.getElementById('payment').addEventListener('change', function() {
+  const cashAmountLabel = document.getElementById("cashAmountLabel");
+  const cashAmountInput = document.getElementById("cashAmount");
+
+  if (this.value === "dinheiro") { 
+    cashAmountLabel.classList.remove("hidden");
+    cashAmountInput.classList.remove("hidden");
+    cashAmountInput.required = true;
+  } else {
+    cashAmountLabel.classList.add("hidden");
+    cashAmountInput.classList.add("hidden");
+    cashAmountInput.required = false;
+    cashAmountInput.value = "";
+  }
+});
+
+function sendOrderViaWhatsApp() {
+  // Captura os dados do formulário de checkout
+  const nome = document.getElementById('name').value;
+  const endereco = document.getElementById('address').value;
+  const whatsapp = document.getElementById('whatsapp').value;
+  const pagamento = document.getElementById('payment').value;
+  const cashAmount = document.getElementById('cashAmount').value;
+
+  // Monta a mensagem com os dados do formulário
+  let message = `Olá! Gostaria de fazer um pedido:\n\n`;
+  message += `*Meus dados:*\n\n`
+  message += `*Nome:* ${nome}\n`;
+  message += `*Endereço:* ${endereco}\n`;
+  message += `*WhatsApp:* ${whatsapp}\n`;
+  message += `*Forma de Pagamento:* ${pagamento}\n`;
+  
+  // Adiciona o valor de troco se o pagamento for em dinheiro e um valor tiver sido inserido
+  if (pagamento === "dinheiro" && cashAmount) {
+    message += `Valor para Troco: R$ ${parseFloat(cashAmount).toFixed(2)}\n\n`;
+  }
+
+  message += `---------------------------\n`
+
+  // Itens do pedido
+  message += `\nItens:\n`;
+  cart.forEach((item) => {
+    message += `${item.nome} - R$ ${item.valor.toFixed(2)} x ${item.quantity} = R$ ${(item.valor * item.quantity).toFixed(2)}\n`;
+  });
+
+  const total = cart.reduce((acc, item) => acc + item.valor * item.quantity, 0);
+  message += `\nTotal: R$ ${total.toFixed(2)}`;
+
+  // Codifica a mensagem e prepara o link do WhatsApp
+  const encodedMessage = encodeURIComponent(message);
+  const phoneNumber = "SEU_NUMERO_DO_WHATSAPP"; //Exemplo: 5511999999999
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+  // Abre o link do WhatsApp
+  window.open(whatsappURL, "_blank");
+}
+
+// Adiciona o evento de envio para o WhatsApp no botão de envio do pedido
+document.getElementById("sendOrderButton").addEventListener("click", sendOrderViaWhatsApp);
