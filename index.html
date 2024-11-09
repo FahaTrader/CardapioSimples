@@ -7,7 +7,7 @@
 
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
   <title>Cardápio Online</title>
 </head>
@@ -49,11 +49,14 @@
       <label for="payment">Forma de Pagamento:</label>
       <select id="payment" name="payment">
         <option value="">--Selecione--</option>
-        <option value="credit">Cartão de Crédito</option>
-        <option value="debit">Cartão de Débito</option>
-        <option value="cash">Dinheiro</option>
+        <option value="credito">Cartão de Crédito</option>
+        <option value="debito">Cartão de Débito</option>
+        <option value="dinheiro">Dinheiro</option>
+        <option value="pix">Pix</option>
       </select>
-      <button class="finalize" type="submit">Enviar Pedido</button>
+      <label for="cashAmount" id="cashAmountLabel" class="hidden">Valor em Dinheiro:</label>
+      <input type="number" id="cashAmount" name="cashAmount" class="hidden" placeholder="Valor para o Troco">
+      <button id="sendOrderButton" class="finalize" type="submit">Enviar Pedido</button>
     </form>
   </div>
 
